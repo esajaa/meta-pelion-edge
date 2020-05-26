@@ -8,7 +8,7 @@ inherit pkgconfig gitpkgv npm-base npm-install
 PR = "r4"
 SRC_URI = "git://git@github.com/armPelionEdge/devicejs-ng.git;protocol=ssh;branch=fp_edge"
 
-SRCREV = "13478a74cfb597b8ac39b43ddcbec82a876d68a4"
+SRCREV = "c9b427bfba7f7d9d205279dcee73a0873f9adbf5"
 
 S = "${WORKDIR}/git"
 
