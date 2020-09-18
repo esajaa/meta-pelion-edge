@@ -2,7 +2,7 @@ DESCRIPTION = "DeviceJS Core Modules"
 LICENSE = "Apache-2.0"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=4336ad26bb93846e47581adc44c4514d"
 
-inherit pkgconfig gitpkgv npm-base autotools
+inherit pkgconfig gitpkgv npm autotools
 
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"

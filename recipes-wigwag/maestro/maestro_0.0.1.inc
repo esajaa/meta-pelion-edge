@@ -64,7 +64,7 @@ do_configure_append() {
   # build dependencies of greaseGo
   pushd ${GREASE_SRC}/deps/src/greaseLib/deps/
     export LD="${CXX}"
-    if [ "${TARGET_ARCH}" = "arm" ]; then
+    if [ "${TARGET_ARCH}" = "arm" ] || [ "${TARGET_ARCH}" = "aarch64" ] ; then
       CONFIG_OPTIONS="--host=arm ${ARCHFLAGS}"
     elif [ "${TARGET_ARCH}" = "x86_64" ]; then
       CONFIG_OPTIONS="--host=x64 ${ARCHFLAGS}"
