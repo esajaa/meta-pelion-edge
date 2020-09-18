@@ -20,7 +20,7 @@ SRCREV_wwrelay = "7020d6bd0d3a486299d33e20be3f11b61372ebeb"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
 
-inherit pkgconfig gitpkgv npm-base update-rc.d systemd
+inherit pkgconfig gitpkgv npm update-rc.d systemd
 
 INHIBIT_PACKAGE_STRIP = "1"
 
