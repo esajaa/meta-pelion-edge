@@ -7,6 +7,7 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
   git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
+  file://ld_preload.patch \
   file://wwrelay \
   file://BUILDMMU.txt \
   file://wwrelay.service \
