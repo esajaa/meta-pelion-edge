@@ -3,7 +3,7 @@ DESCRIPTION = "Node binding for ISC dhclient"
 LICENSE = "GPLv2+"
 LIC_FILES_CHKSUM = "file://README.md;md5=cc38e3726b639d2c1274e47c3d90be91"
 
-inherit pkgconfig gitpkgv npm
+inherit pkgconfig gitpkgv npm-base
 
 #DEPENDS+="libcap libcap-native"
 #RDEPENDS_${PV}+="libcap"
