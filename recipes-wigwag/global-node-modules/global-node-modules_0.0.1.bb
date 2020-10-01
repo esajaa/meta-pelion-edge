@@ -38,7 +38,7 @@ do_configure() {
 	cd ${S}
 	cp ${STAGING_INCDIR}/avahi-compat-libdns_sd/dns_sd.h ${STAGING_INCDIR}/
 	whereisgyp=$(which node-gyp) || :  #  force a return code of 0 always, so bitbake doesn't crash
-	if [[ $whereisgyp = "" ]]; then
+	if [ $whereisgyp = "" ]; then
 		oe_runnpm_native install -g node-gyp@5.1.1
 	fi
 
@@ -46,7 +46,7 @@ do_configure() {
 
 	#--------------------devjs-production-tools-----------------------------------------------------------
 	cd ${S}/../
-	if [[ ! -e devjs-production-tools ]]; then
+	if [ ! -e devjs-production-tools ]; then
 		echo "devjs-production-tools does not exist" >> /tmp/global-node-modules.log
 		git clone git@github.com:armPelionEdge/devjs-production-tools.git
 		git -C devjs-production-tools checkout ${SRCREV_devjs_prod_tools}
