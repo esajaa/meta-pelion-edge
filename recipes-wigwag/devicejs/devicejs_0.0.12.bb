@@ -41,3 +41,5 @@ do_install() {
   install -d ${D}/wigwag/devicejs-ng
   cp -r * ${D}/wigwag/devicejs-ng
 }
+
+INSANE_SKIP_${PN} += "file-rdeps"
