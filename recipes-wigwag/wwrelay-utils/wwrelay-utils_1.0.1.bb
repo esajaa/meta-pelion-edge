@@ -7,6 +7,7 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/edge-utils.git;protocol=ssh;name=wwrelay \
   git://git@github.com/armPelionEdge/edgeos-shell-scripts.git;protocol=ssh;name=dss;destsuffix=git/dss \
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=ssh;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
+  git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;destsuffix=git/pe-utils \
   file://ld_preload.patch \
   file://wwrelay \
   file://BUILDMMU.txt \
@@ -20,8 +21,9 @@ SRCREV_FORMAT = "wwrelay-dss"
 SRCREV_wwrelay = "7020d6bd0d3a486299d33e20be3f11b61372ebeb"
 SRCREV_dss = "04db833a43b80ecdfae07fd388bbe4e242771f38"
 SRCREV_node_i2c = "511b1f0beae55bd9067537b199d52381f6ac3e01"
+SRCREV_pe-utils = "a712d9f0f01bec9a9aa70dda7153cff2f2ba1f3f"
 
-inherit pkgconfig gitpkgv npm-base update-rc.d systemd
+inherit pkgconfig gitpkgv update-rc.d systemd
 
 INHIBIT_PACKAGE_STRIP = "1"
 
@@ -36,8 +38,8 @@ PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
 PR = "r7"
 
-DEPENDS = "update-rc.d-native nodejs nodejs-native"
-RDEPENDS_${PN} += " bash nodejs openssl global-node-modules"
+DEPENDS = "update-rc.d-native"
+RDEPENDS_${PN} += " bash openssl "
 
 FILES_${PN} = "\
   /wigwag/*\
@@ -75,8 +77,6 @@ do_log(){
 }
 do_configure(){
 	echo "its a new build (erasing old log)" > /tmp/YOCTO_wwrelay-utils.log
-	oe_runnpm_native -g install node-gyp@5.1.1
-	do_log "node-gyp installed at: $(which node-gyp)"
 }
 
 do_compile() {
@@ -95,56 +95,6 @@ do_compile() {
 	echo  "      "  \"ww_module_hash\" ":" \"\" >> $VER_FILE
 	echo  "   "  }]  >> $VER_FILE
 	echo  "}" >> $VER_FILE
-	export AR
-	export LD=$CXX
-	export LINK=$CXX
-	export CC
-	export CXX
-	export RANLIB
-	export GYPFLAGS="-Dv8_can_use_fpu_instructions=false -Darm_version=7 -Darm_float_abi=hardfp"
-	NGYP_OPTIONS="-v --without-snapshot --dest-cpu=arm --dest-os=linux --with-arm-float-abi=hardfp"
-	export CONFIG_OPTIONS="--host=arm-poky-linux-gnueabihp --target=arm-poky-linux-gnueabihp"
-	ARCH=`echo $AR | awk -F '-' '{print $1}'`
-	export npm_config_arch=$ARCH
-	NPM_ARCH=$ARCH
-	
-	do_log "6BSMD"
-	cd ${S}/6BSMD
-	make all
-
-	do_log "I2c"
-	cd ${S}/tempI2C/node-i2c
-	do_log "in wwrelay-utils node-i2c"
-	oe_runnpm install --target_arch=arm --production
-	node-gyp configure
-	node-gyp build
-
-	cd ${S}/I2C
-	do_log "entered the directory $(pwd)"
-	sed -i -- "/node-i2c/d" package.json
-	oe_runnpm install  --target_arch=arm --production
-	cd node_modules
-	cp -r ${S}/tempI2C/node-i2c/ i2c
-
-	do_log "GPIO"
-	cd ${S}/GPIO
-	oe_runnpm install --production
-	make
-
-  do_log "slip-radio"
-  cd ${S}/slip-radio
-  oe_runnpm install --production
-
-  do_log "slipcoms"
-  cd ${S}/slipcomms
-  make
-
-  do_log "cc2530prog"
-  cd ${S}/cc2530prog
-  make
-
-  cd ${S}
-
 }
 
 do_dirInstall(){
@@ -180,7 +130,6 @@ do_install() {
 	install -m 0755 ${S}/etc/init.d/devjssupport ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/relayterm ${D}${INIT_D_DIR}
 	install -m 0755 ${S}/etc/init.d/wwfunctions ${D}${INIT_D_DIR}
-	update-rc.d -r ${D} relayterm defaults 85 20
 
 # Install systemd units
   install -d ${D}${systemd_system_unitdir}
@@ -195,40 +144,11 @@ do_install() {
 	#version
 	install -m 0755 ${S}/version.json ${D}/wigwag/wwrelay-utils/conf/versions.json
 	install -m 0755 ${S}/version.json ${D}/wigwag/etc/versions.json
-	cp ${S}/slipcomms/slipcomms ${D}/wigwag/devicejs-core-modules/rsmi/bin/slipcomms-arm
-	cp ${S}/cc2530prog/cc2530prog ${D}/wigwag/devicejs-core-modules/rsmi/bin/cc2530prog-arm
-	cp -r ${S}/6BSMD ${D}/wigwag/wwrelay-utils/6BSMD
-	cp -r ${S}/common ${D}/wigwag/wwrelay-utils/common
-	cp -r ${S}/.b ${D}/wigwag/wwrelay-utils/
-	cp -r ${S}/initscripts ${D}/wigwag/wwrelay-utils/initscripts
-	install -m 0755 ${S}/initscripts/UDEV/96-local.rules ${D}/etc/udev/rules.d/96-local.rules
-	cp -r ${S}/debug_scripts ${D}/wigwag/wwrelay-utils/debug_scripts
-	chmod 755 ${D}/wigwag/wwrelay-utils/debug_scripts/*
-	chmod 755 ${D}/wigwag/wwrelay-utils/debug_scripts/*.*
-	cp -r ${S}/slip-radio ${D}/wigwag/wwrelay-utils/slip-radio
-	mkdir -p ${D}${bindir}
-	#all of dev-tools
-	cp -r ${S}/dev-tools ${D}/wigwag/wwrelay-utils/dev-tools
-	install -m 755 ${S}/dev-tools/bin/ccommon.sh ${D}/wigwag/system/bin/
-	install -m 755 ${S}/dss/* ${D}/wigwag/system/bin/
-	install -m 755 ${S}/dev-tools/bin/stopwatchdog.sh ${D}/wigwag/system/bin/stopwatchdog
-	rm -rf ${D}/wigwag/wwrelay-utils/dev-tools/bin/{stopwatchdog.sh,info.sh}
+	
+    install -m 0755 ${S}/initscripts/UDEV/96-local.rules ${D}/etc/udev/rules.d/96-local.rules
 
-	#all of GPIO
-	cp -r ${S}/GPIO ${D}/wigwag/wwrelay-utils/GPIO
-	install -m 755 ${S}/GPIO/led.sh ${D}/wigwag/system/bin/led
-	install -m 755 ${S}/GPIO/pinctrl.sh ${D}/wigwag/system/bin/pinctrl
-	rm -rf ${D}/wigwag/wwrelay-utils/GPIO/led.sh
-	rm -rf ${D}/wigwag/wwrelay-utils/GPIO/pinctrl.sh
-	install -m 755 ${S}/GPIO/leddaemon ${D}/wigwag/system/bin/leddaemon
-	rm -rf ${D}/wigwag/wwrelay-utils/GPIO/leddaemon
-	#all of DOGControl
-	install -m 755 ${S}/DOGcontrol/dogProgrammer.sh ${D}/wigwag/system/bin/dogProgrammer
-	#cherrypick manu-tools
-	#all of I2C
-	cp -r ${S}/I2C ${D}/wigwag/wwrelay-utils/I2C
-	install -m 755 ${S}/I2C/eetool.sh ${D}/wigwag/system/bin/eetool
-	rm -rf ${D}/wigwag/wwrelay-utils/I2C/eetool.sh
+	mkdir -p ${D}${bindir}
+
 	#populate the /wigwag/system/lib
 	install -d ${D}/wigwag/log
 	install -d ${D}/wigwag/devicejs/conf
@@ -251,6 +171,7 @@ do_install() {
 		install -m 644 "${WORKDIR}/logrotate_directives/$f" "${D}${sysconfdir}/logrotate.d"
 	done 
 
+    cp -r ${S}/pe-utils/identity-tools ${D}/wigwag/wwrelay-utils/
 }
 
 
