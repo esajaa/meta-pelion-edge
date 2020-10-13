@@ -98,11 +98,11 @@ do_compile() {
 }
 
 do_dirInstall(){
-	pushd . >> /dev/null
+    entry_dir=$(pwd)
 	cd $1
 	find . -type d -exec install -d $2/{} \;
 	find . -type f -exec install -m 0755 {} $2/{} \; 
-  popd >> /dev/null
+    cd $entry_dir
 }
 
 
