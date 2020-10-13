@@ -5,7 +5,7 @@ LIC_FILES_CHKSUM = "file://src/${GO_IMPORT}/LICENSE;md5=1dece7821bf3fd70fe1309ea
 
 
 DEPENDS = "deviceos-users"
-RDEPENDS_${PN} += "bash twlib"
+RDEPENDS_${PN} += "bash"
 
 GO_LINKSHARED = ""
 CGO_LDFLAGS = "-Lsrc/github.com/armPelionEdge/maestro/vendor/github.com/armPelionEdge/greasego/deps/lib"
