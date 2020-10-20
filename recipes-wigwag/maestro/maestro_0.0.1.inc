@@ -85,7 +85,8 @@ do_configure_append() {
     make standalone_test_logsink
   cd $entry_dir
 
-  mkdir -p ${GREASE_SRC}/deps/{lib,include}
+  mkdir -p ${GREASE_SRC}/deps/lib
+  mkdir -p ${GREASE_SRC}/deps/include
 
   # migrate all of the greaseGo dependencies up to the folder Go will use
   cp -r ${CGREASE_SRC}/deps/build/lib/* ${GREASE_SRC}/deps/lib
