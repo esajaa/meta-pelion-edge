@@ -10,6 +10,7 @@ SRC_URI += "file://maestro-config-imx8mmevk.yaml \
             file://devicedb.template.conf \
             file://0001-aarch64-arm.patch \
             file://0002-eventfd2.patch \
+            file://0003-build-with-autoconf.patch \
             "
 
 do_install_append() {
