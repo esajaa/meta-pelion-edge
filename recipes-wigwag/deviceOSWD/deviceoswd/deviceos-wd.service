@@ -3,8 +3,8 @@ Description="Device OS watchdog reseting service"
 
 [Service]
 Restart=always
-ExecStartPre=-/usr/bin/pkill deviceOSWD
-ExecStart=/wigwag/system/bin/deviceOSWD -w 3000 -m 900 -s /var/deviceOSkeepalive
+ExecStartPre=-/usr/bin/pkill deviceOSWD_dummy
+ExecStart=/wigwag/system/bin/deviceOSWD_dummy -w 3000 -m 900 -s /var/deviceOSkeepalive
 ExecStartPost=sh -c "echo -e \"dog_stop\" | socat unix-sendto:/var/deviceOSkeepalive STDIO"
 ExecStop=sh -c "echo -e stop | socat unix-sendto:/var/deviceOSkeepalive STDIO"
 

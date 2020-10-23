@@ -4,10 +4,6 @@ linuxKernelLog: true
 httpUnixSocket: /tmp/maestroapi.sock
 configDBPath: /userdata/etc/maestroConfig.db
 clientId: "{{ARCH_SERIAL_NUMBER}}"
-watchdog:
-    path: "/wigwag/system/lib/rp100wd.so"
-    opt1: "/var/deviceOSkeepalive"
-    opt2: "30"
 network:
     interfaces:
         - if_name: eth0
