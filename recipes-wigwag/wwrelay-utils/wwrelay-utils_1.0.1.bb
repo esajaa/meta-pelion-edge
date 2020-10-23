@@ -9,6 +9,7 @@ SRC_URI="\
   git://git@github.com/armPelionEdge/node-i2c.git;protocol=https;name=node_i2c;destsuffix=git/tempI2C/node-i2c \
   git://git@github.com/armPelionEdge/pe-utils.git;protocol=ssh;name=pe-utils;destsuffix=git/pe-utils \
   file://ld_preload.patch \
+  file://pythonhome.patch \
   file://BUILDMMU.txt \
   file://wait-for-pelion-identity.service \
   file://do-post-upgrade.service \
