@@ -37,6 +37,8 @@ PR = "r7"
 DEPENDS = "update-rc.d-native"
 RDEPENDS_${PN} += " bash openssl "
 
+RM_WORK_EXCLUDE += "${PN}"
+
 FILES_${PN} = "\
   /wigwag/*\
   /wigwag/etc\

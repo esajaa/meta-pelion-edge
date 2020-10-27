@@ -32,6 +32,8 @@ PR = "r0"
 RUN_CONFIG_DIR="wigwag/etc/run"
 TEMPLATE_CONFIG_DIR="wigwag/etc/template"
 
+RM_WORK_EXCLUDE += "${PN}"
+
 FILESEXTRAPATHS_prepend := "${THISDIR}/maestro:"
 FILES_${PN} += "\
     /wigwag/system/bin/*\
