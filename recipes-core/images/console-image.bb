@@ -53,7 +53,6 @@ DEV_SDK_INSTALL = " \
     libtool \
     ltrace \
     make \
-    nodejs \
     pkgconfig \
     python3-modules \
     strace \
@@ -154,16 +153,15 @@ WIGWAG_STUFF = " \
     kubelet \
     tini \
     lcms \
-    virtual/mbed-edge \
+    virtual/mbed-edge-core \
     mbed-edge-examples \
     mbed-fcc \
     panic \
     pps-tools \
-    twlib \
     devicedb \
     maestro \
     deviceos-users \
-    relay-term \
+    wwrelay-utils \
 "
 
 #OPENSSL_102 = " \
