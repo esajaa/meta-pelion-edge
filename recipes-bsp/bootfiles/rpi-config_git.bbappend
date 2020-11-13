@@ -18,6 +18,11 @@ do_deploy_append() {
         sed -i '/#display_rotate=/ c\display_rotate=${DISPLAY_ROTATE}' ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
     fi
 
+    if [ -n "${ENABLE_SERIAL_CONSOLE}" ]; then
+        echo "" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
+        echo "dtoverlay=disable-bt" >> ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
+    fi
+
     # match the u-boot.bin install name set in IMAGE_BOOT_FILES by meta-raspberrypi/conf/machine/include/rpi-base.inc
     if [ "${RPI_USE_U_BOOT}" = "1" ]; then
         sed -i 's/kernel=.*/kernel=${SDIMG_KERNELIMAGE}/' ${DEPLOYDIR}/${BOOTFILES_DIR_NAME}/config.txt
